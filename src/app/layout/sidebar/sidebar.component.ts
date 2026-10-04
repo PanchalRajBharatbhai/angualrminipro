@@ -109,7 +109,6 @@ interface NavItem {
         z-index: 100;
         user-select: none;
         box-sizing: border-box;
-        overflow: hidden;
       }
 
       .sidebar.collapsed {
@@ -165,25 +164,29 @@ interface NavItem {
 
       .btn-collapse {
         position: absolute;
-        right: -12px;
-        top: 20px;
-        width: 24px;
-        height: 24px;
+        right: -13px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 26px;
+        height: 26px;
         border-radius: var(--radius-full);
         background: var(--surface);
         border: 1px solid var(--border);
-        color: var(--text-secondary);
+        color: var(--text-primary);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
         transition: all var(--transition-fast);
-        z-index: 2;
+        z-index: 100;
       }
       .btn-collapse:hover {
-        background: var(--surface-secondary);
-        color: var(--text-primary);
+        background: var(--primary);
+        color: #ffffff;
+        border-color: var(--primary);
+        transform: translateY(-50%) scale(1.12);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
       }
 
       @media (max-width: 992px) {
@@ -196,6 +199,7 @@ interface NavItem {
           max-width: 100%;
           height: 100dvh;
           border-right: none;
+          overflow: hidden;
         }
 
         .btn-collapse {
