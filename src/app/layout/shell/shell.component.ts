@@ -76,6 +76,11 @@ import { ToastContainerComponent } from '../../shared/components/toast-container
 
       .layout-sidebar {
         flex-shrink: 0;
+        height: 100vh;
+        height: 100dvh;
+        position: sticky;
+        top: 0;
+        z-index: 100;
       }
 
       .layout-main {

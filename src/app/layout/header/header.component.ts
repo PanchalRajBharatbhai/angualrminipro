@@ -79,6 +79,7 @@ export interface AppNotification {
 
           <!-- Notifications Popup Panel -->
           @if (isNotifOpen) {
+            <div class="notif-backdrop" (click)="closeNotifications()"></div>
             <div class="notif-dropdown" (click)="$event.stopPropagation()">
               <div class="notif-header">
                 <div class="notif-header-title">
@@ -87,15 +88,25 @@ export interface AppNotification {
                     <span class="unread-pill">{{ unreadCount }} new</span>
                   }
                 </div>
-                @if (notifications.length > 0) {
+                <div class="notif-header-actions">
+                  @if (notifications.length > 0) {
+                    <button
+                      type="button"
+                      class="btn-text-action"
+                      (click)="markAllAsRead()"
+                    >
+                      Mark read
+                    </button>
+                  }
                   <button
                     type="button"
-                    class="btn-text-action"
-                    (click)="markAllAsRead()"
+                    class="btn-close-notif"
+                    (click)="closeNotifications()"
+                    aria-label="Close notifications"
                   >
-                    Mark all as read
+                    &times;
                   </button>
-                }
+                </div>
               </div>
 
               <div class="notif-list">
@@ -254,6 +265,10 @@ export interface AppNotification {
         line-height: 1;
       }
 
+      .notif-backdrop {
+        display: none;
+      }
+
       .notif-dropdown {
         position: absolute;
         top: calc(100% + 8px);
@@ -276,6 +291,29 @@ export interface AppNotification {
         justify-content: space-between;
         border-bottom: 1px solid var(--border);
         background: var(--surface);
+      }
+
+      .notif-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .btn-close-notif {
+        display: none;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.35rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0.15rem 0.35rem;
+        border-radius: var(--radius-sm);
+        transition: all var(--transition-fast);
+      }
+      .btn-close-notif:hover {
+        color: var(--text-primary);
+        background: var(--surface-hover);
       }
 
       .notif-header-title {
@@ -478,15 +516,15 @@ export interface AppNotification {
 
       @media (max-width: 640px) {
         .app-header {
-          padding: 0 0.5rem;
+          padding: 0 0.75rem;
         }
         .header-left {
-          gap: 0.35rem;
+          gap: 0.5rem;
           min-width: 0;
-          overflow: hidden;
+          flex: 1;
         }
         .header-right {
-          gap: 0.25rem;
+          gap: 0.35rem;
           flex-shrink: 0;
         }
         .user-chip {
@@ -499,15 +537,75 @@ export interface AppNotification {
           display: none;
         }
         .page-title {
-          font-size: 0.925rem;
+          font-size: 0.95rem;
+          font-weight: 700;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 130px;
+        }
+        .btn-close-notif {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .notif-backdrop {
+          display: block;
+          position: fixed;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.45);
+          backdrop-filter: blur(2px);
+          z-index: 1050;
+          animation: fadeIn 0.15s ease-out;
         }
         .notif-dropdown {
-          width: 290px;
-          right: -50px;
+          position: fixed;
+          top: calc(var(--header-height) + 6px);
+          left: 8px;
+          right: 8px;
+          width: auto;
+          max-width: calc(100vw - 16px);
+          max-height: calc(100dvh - var(--header-height) - 16px);
+          display: flex;
+          flex-direction: column;
+          z-index: 1060;
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--border);
+        }
+        .notif-list {
+          flex: 1 1 auto;
+          min-height: 0;
+          max-height: calc(100dvh - var(--header-height) - 120px);
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .app-header {
+          padding: 0 0.375rem;
+        }
+        .page-title {
+          font-size: 0.875rem;
+        }
+        .notif-dropdown {
+          left: 4px;
+          right: 4px;
+          max-width: calc(100vw - 8px);
+        }
+        .notif-header {
+          padding: 0.65rem 0.75rem;
+        }
+        .notif-item {
+          padding: 0.65rem 0.75rem;
+          gap: 0.5rem;
+        }
+        .notif-title {
+          font-size: 0.8125rem;
+        }
+        .notif-desc {
+          font-size: 0.72rem;
+          line-height: 1.35;
         }
       }
     `,
@@ -590,6 +688,10 @@ export class HeaderComponent {
 
   clearAll(): void {
     this.notifications = [];
+    this.isNotifOpen = false;
+  }
+
+  closeNotifications(): void {
     this.isNotifOpen = false;
   }
 

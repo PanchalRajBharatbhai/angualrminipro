@@ -98,9 +98,8 @@ interface NavItem {
 
       .sidebar {
         width: var(--sidebar-width);
-        height: 100%;
-        min-height: 100%;
-        max-height: 100dvh;
+        height: 100vh;
+        height: 100dvh;
         background: var(--surface);
         border-right: 1px solid var(--border);
         display: flex;
@@ -321,8 +320,8 @@ interface NavItem {
       }
 
       .btn-logout {
-        background: transparent;
-        border: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
         color: var(--text-muted);
         cursor: pointer;
         padding: 0.5rem;
@@ -339,6 +338,7 @@ interface NavItem {
       .btn-logout:active {
         color: var(--danger);
         background: var(--danger-light);
+        border-color: var(--danger);
       }
 
       .hidden {
