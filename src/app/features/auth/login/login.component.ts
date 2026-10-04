@@ -61,7 +61,7 @@ import { AutoFocusDirective } from '../../../shared/directives/auto-focus.direct
                     formControlName="email"
                     class="form-control"
                     [class.is-invalid]="f['email'].touched && f['email'].invalid"
-                    placeholder="e.g., admin@university.edu"
+                    placeholder="Enter your email address"
                     appAutoFocus
                   />
                 </div>
@@ -82,7 +82,7 @@ import { AutoFocusDirective } from '../../../shared/directives/auto-focus.direct
                 <div class="password-label-row">
                   <label for="password" class="form-label required">Password</label>
                 </div>
-                <div class="input-icon-wrap">
+                <div class="input-icon-wrap password-wrap">
                   <app-icon name="shield" [size]="16" class="field-icon"></app-icon>
                   <input
                     id="password"
@@ -90,13 +90,14 @@ import { AutoFocusDirective } from '../../../shared/directives/auto-focus.direct
                     formControlName="password"
                     class="form-control"
                     [class.is-invalid]="f['password'].touched && f['password'].invalid"
-                    placeholder="Enter password"
+                    placeholder="Enter your password"
                   />
                   <button
                     type="button"
                     class="btn-toggle-pass"
                     (click)="showPassword = !showPassword"
                     [title]="showPassword ? 'Hide password' : 'Show password'"
+                    aria-label="Toggle password visibility"
                   >
                     <app-icon [name]="showPassword ? 'x' : 'eye'" [size]="15"></app-icon>
                   </button>
@@ -246,30 +247,53 @@ import { AutoFocusDirective } from '../../../shared/directives/auto-focus.direct
         position: relative;
         display: flex;
         align-items: center;
+        width: 100%;
       }
 
       .field-icon {
         position: absolute;
-        left: 0.875rem;
+        left: 0.95rem;
+        top: 50%;
+        transform: translateY(-50%);
         color: var(--text-muted);
         pointer-events: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        flex-shrink: 0;
       }
 
       .input-icon-wrap .form-control {
-        padding-left: 2.5rem;
+        width: 100%;
+        min-height: 44px;
+        padding-left: 2.85rem !important;
+        padding-right: 1rem !important;
+        box-sizing: border-box;
+      }
+
+      .input-icon-wrap.password-wrap .form-control {
+        padding-right: 2.85rem !important;
       }
 
       .btn-toggle-pass {
         position: absolute;
         right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
         background: transparent;
         border: none;
         color: var(--text-muted);
         cursor: pointer;
-        padding: 0.25rem;
-        display: flex;
+        padding: 0.4rem;
+        min-width: 32px;
+        min-height: 32px;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        border-radius: var(--radius-sm);
+        z-index: 3;
+        transition: color var(--transition-fast);
       }
       .btn-toggle-pass:hover {
         color: var(--text-primary);
@@ -315,8 +339,99 @@ import { AutoFocusDirective } from '../../../shared/directives/auto-focus.direct
       }
 
       @media (max-width: 480px) {
+        .login-wrapper {
+          padding: 1.25rem 0.85rem;
+          min-height: 100dvh;
+        }
+
+        .login-container {
+          max-width: 100%;
+          gap: 1.25rem;
+        }
+
+        .brand-badge {
+          width: 46px;
+          height: 46px;
+          margin-bottom: 0.65rem;
+        }
+
+        .login-header h2 {
+          font-size: 1.35rem;
+        }
+
+        .login-header p {
+          font-size: 0.8rem;
+          padding: 0 0.5rem;
+        }
+
         .card-inner {
-          padding: 1.5rem 1.25rem;
+          padding: 1.5rem 1.15rem;
+        }
+
+        .card-title-group {
+          margin-bottom: 1.25rem;
+        }
+
+        .card-title-group h3 {
+          font-size: 1.125rem;
+        }
+
+        .card-title-group p {
+          font-size: 0.8rem;
+        }
+
+        .input-icon-wrap .form-control {
+          padding-left: 2.85rem !important;
+          min-height: 44px;
+          font-size: 0.875rem;
+        }
+
+        .input-icon-wrap.password-wrap .form-control {
+          padding-right: 2.85rem !important;
+        }
+
+        .field-icon {
+          left: 0.875rem;
+        }
+
+        .btn-toggle-pass {
+          right: 0.65rem;
+        }
+
+        .btn-block {
+          min-height: 44px;
+          font-size: 0.875rem;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .login-wrapper {
+          padding: 0.85rem 0.5rem;
+        }
+
+        .card-inner {
+          padding: 1.25rem 0.85rem;
+        }
+
+        .login-header h2 {
+          font-size: 1.2rem;
+        }
+
+        .input-icon-wrap .form-control {
+          padding-left: 2.75rem !important;
+          font-size: 0.8125rem;
+        }
+
+        .input-icon-wrap.password-wrap .form-control {
+          padding-right: 2.75rem !important;
+        }
+
+        .field-icon {
+          left: 0.75rem;
+        }
+
+        .btn-toggle-pass {
+          right: 0.5rem;
         }
       }
     `,
