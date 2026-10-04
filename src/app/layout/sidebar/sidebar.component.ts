@@ -89,9 +89,18 @@ interface NavItem {
   `,
   styles: [
     `
+      :host {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-height: 100%;
+      }
+
       .sidebar {
         width: var(--sidebar-width);
-        height: 100vh;
+        height: 100%;
+        min-height: 100%;
+        max-height: 100dvh;
         background: var(--surface);
         border-right: 1px solid var(--border);
         display: flex;
@@ -100,6 +109,8 @@ interface NavItem {
         position: relative;
         z-index: 100;
         user-select: none;
+        box-sizing: border-box;
+        overflow: hidden;
       }
 
       .sidebar.collapsed {
@@ -108,12 +119,14 @@ interface NavItem {
 
       .sidebar-brand {
         height: var(--header-height);
+        min-height: var(--header-height);
         padding: 0 1.25rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
         border-bottom: 1px solid var(--border);
         position: relative;
+        flex-shrink: 0;
       }
 
       .brand-logo {
@@ -175,15 +188,29 @@ interface NavItem {
       }
 
       @media (max-width: 992px) {
+        :host {
+          width: 100%;
+        }
+
+        .sidebar {
+          width: 100%;
+          max-width: 100%;
+          height: 100dvh;
+          border-right: none;
+        }
+
         .btn-collapse {
           display: none;
         }
       }
 
       .sidebar-nav {
-        flex: 1;
+        flex: 1 1 auto;
+        min-height: 0;
         padding: 1.25rem 0.75rem;
         overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
       }
 
       .nav-section-title {
@@ -235,18 +262,27 @@ interface NavItem {
       }
 
       .sidebar-footer {
-        padding: 1rem 0.75rem;
+        flex-shrink: 0;
+        margin-top: auto;
+        padding: 0.875rem 0.75rem;
+        padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
         border-top: 1px solid var(--border);
         background: var(--surface);
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
       }
 
       .user-profile-widget {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.5rem;
+        padding: 0.625rem 0.75rem;
         border-radius: var(--radius-md);
         background: var(--surface-secondary);
+        border: 1px solid var(--border-subtle);
+        box-sizing: border-box;
       }
       .user-profile-widget.collapsed {
         justify-content: center;
@@ -254,8 +290,8 @@ interface NavItem {
       }
 
       .user-avatar {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: var(--radius-full);
         object-fit: cover;
         flex-shrink: 0;
@@ -267,6 +303,7 @@ interface NavItem {
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        min-width: 0;
       }
 
       .user-name {
@@ -288,14 +325,18 @@ interface NavItem {
         border: none;
         color: var(--text-muted);
         cursor: pointer;
-        padding: 0.35rem;
+        padding: 0.5rem;
+        min-width: 38px;
+        min-height: 38px;
         border-radius: var(--radius-sm);
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all var(--transition-fast);
+        flex-shrink: 0;
       }
-      .btn-logout:hover {
+      .btn-logout:hover,
+      .btn-logout:active {
         color: var(--danger);
         background: var(--danger-light);
       }
